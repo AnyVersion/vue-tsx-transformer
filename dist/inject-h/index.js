@@ -30,7 +30,7 @@ function injectH(node) {
         return node;
     }
     return typescript_1.factory.updateMethodDeclaration(node, node.decorators, node.modifiers, node.asteriskToken, node.name, node.questionToken, node.typeParameters, node.parameters, node.type, typescript_1.factory.createBlock([
-        typescript_1.factory.createVariableStatement(undefined, typescript_1.factory.createVariableDeclarationList([typescript_1.factory.createVariableDeclaration(typescript_1.factory.createIdentifier("h"), undefined, undefined, typescript_1.factory.createCallExpression(typescript_1.factory.createPropertyAccessExpression(typescript_1.factory.createThis(), typescript_1.factory.createIdentifier("$createElement")), undefined, []))], typescript_1.default.NodeFlags.None))
+        typescript_1.factory.createVariableStatement(undefined, typescript_1.factory.createVariableDeclarationList([typescript_1.factory.createVariableDeclaration(typescript_1.factory.createIdentifier("h"), undefined, undefined, typescript_1.factory.createPropertyAccessExpression(typescript_1.factory.createThis(), typescript_1.factory.createIdentifier("$createElement")))], typescript_1.default.NodeFlags.None))
     ].concat(((_a = node.body) === null || _a === void 0 ? void 0 : _a.statements) || [])));
 }
 exports.default = injectH;

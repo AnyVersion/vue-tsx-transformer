@@ -23,13 +23,9 @@ export default function injectH(node: ts.MethodDeclaration) {
               factory.createIdentifier("h"),
               undefined,
               undefined,
-              factory.createCallExpression(
-                factory.createPropertyAccessExpression(
-                  factory.createThis(),
-                  factory.createIdentifier("$createElement")
-                ),
-                undefined,
-                []
+              factory.createPropertyAccessExpression(
+                factory.createThis(),
+                factory.createIdentifier("$createElement")
               )
             )],
             ts.NodeFlags.None
