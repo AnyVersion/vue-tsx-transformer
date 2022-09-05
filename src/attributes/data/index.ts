@@ -183,6 +183,7 @@ export default class AttributesData {
         )
       )
     }
+    this.destroy()
     if (objects.length > 0) {
       return factory.createObjectLiteralExpression(objects)
     }

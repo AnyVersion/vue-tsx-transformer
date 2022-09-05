@@ -152,6 +152,7 @@ class AttributesData {
                 }
             }))));
         }
+        this.destroy();
         if (objects.length > 0) {
             return typescript_1.factory.createObjectLiteralExpression(objects);
         }
