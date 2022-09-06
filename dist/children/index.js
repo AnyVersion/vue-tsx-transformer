@@ -22,14 +22,20 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const typescript_1 = __importStar(require("typescript"));
+const html_entities_1 = __importDefault(require("./html-entities"));
 function transformChild(children) {
     const result = children === null || children === void 0 ? void 0 : children.map(item => {
         if (typescript_1.default.isJsxText(item)) {
             const text = item.text.trim();
             if (text) {
-                return typescript_1.factory.createStringLiteral(text.split(/\r\n|\n|\r/).map(line => line.trim()).filter(line => line).join('\n'));
+                return typescript_1.factory.createStringLiteral(text.split(/\r\n|\n|\r/).map(line => line.trim()).filter(line => line).join('\n').replace(/&([a-zA-Z]*?);/g, (str, $1) => {
+                    return html_entities_1.default[$1] || str;
+                }));
             }
         }
         else if (typescript_1.default.isJsxExpression(item)) {
@@ -41,9 +47,6 @@ function transformChild(children) {
     }).filter(item => item);
     if (result && result.length > 0) {
         return typescript_1.factory.createArrayLiteralExpression(result, true);
-    }
-    else {
-        return typescript_1.factory.createIdentifier("undefined");
     }
 }
 exports.default = transformChild;
