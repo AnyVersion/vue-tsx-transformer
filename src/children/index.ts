@@ -16,7 +16,7 @@ export default function transformChild(children?: ts.Node[]) {
     }
   }).filter(item => item) as ts.Expression[] | undefined
   if (result && result.length > 0) {
-    return factory.createArrayLiteralExpression(result)
+    return factory.createArrayLiteralExpression(result, true)
   } else {
     return factory.createIdentifier("undefined")
   }

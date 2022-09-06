@@ -40,7 +40,7 @@ function transformChild(children) {
         }
     }).filter(item => item);
     if (result && result.length > 0) {
-        return typescript_1.factory.createArrayLiteralExpression(result);
+        return typescript_1.factory.createArrayLiteralExpression(result, true);
     }
     else {
         return typescript_1.factory.createIdentifier("undefined");
