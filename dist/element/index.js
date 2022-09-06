@@ -37,7 +37,10 @@ function transformElement(node, traverse) {
         args.push(attributes);
     }
     if (children) {
-        args.push((0, children_1.default)(children.map(item => traverse(item))));
+        const child = (0, children_1.default)(children.map(item => traverse(item)));
+        if (child) {
+            args.push(child);
+        }
     }
     return typescript_1.factory.createCallExpression(typescript_1.factory.createIdentifier('h'), [], args);
 }

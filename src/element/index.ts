@@ -10,7 +10,10 @@ export default function transformElement(node: ts.JsxElement | ts.JsxSelfClosing
     args.push(attributes)
   }
   if (children) {
-    args.push(transformChild(children.map(item => traverse(item))))
+    const child = transformChild(children.map(item => traverse(item)))
+    if (child) {
+      args.push(child)
+    }
   }
   return factory.createCallExpression(
     factory.createIdentifier('h'),
