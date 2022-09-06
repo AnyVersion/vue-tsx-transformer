@@ -32,7 +32,7 @@ export default function transformVModel({ tag, expression, isComponent }: {
           factory.createArrowFunction(
             undefined,
             undefined,
-            [factory.createParameterDeclaration(undefined, undefined, undefined, factory.createIdentifier('$$event'))],
+            [createParameterDeclaration('$$event')],
             undefined,
             factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
             factory.createBlock(
