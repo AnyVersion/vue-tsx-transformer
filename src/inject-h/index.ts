@@ -6,8 +6,7 @@ export default function injectH(node: ts.MethodDeclaration) {
     return node
   }
   if (node.name.getText() === 'render' && node.parameters.length === 0) {
-    return factory.updateMethodDeclaration(
-      node,
+    return factory.createMethodDeclaration(
       node.decorators,
       node.modifiers,
       node.asteriskToken,
@@ -19,8 +18,7 @@ export default function injectH(node: ts.MethodDeclaration) {
       node.body
     )
   }
-  return factory.updateMethodDeclaration(
-    node,
+  return factory.createMethodDeclaration(
     node.decorators,
     node.modifiers,
     node.asteriskToken,
