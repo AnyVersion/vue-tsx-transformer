@@ -128,14 +128,19 @@ class AttributesData {
             objects.push(typescript_1.factory.createPropertyAssignment(name, expression));
         });
         this.props.forEach((data, name) => {
-            objects.push(typescript_1.factory.createPropertyAssignment(name, typescript_1.factory.createObjectLiteralExpression(data.sort((a, b) => a.index - b.index).map(({ name, expression }) => {
-                if (!name) {
-                    return typescript_1.factory.createSpreadAssignment(expression);
-                }
-                else {
-                    return typescript_1.factory.createPropertyAssignment(typescript_1.factory.createStringLiteral(name), expression);
-                }
-            }))));
+            if (data.length === 1 && !data[0].name) {
+                objects.push(typescript_1.factory.createPropertyAssignment(typescript_1.factory.createStringLiteral(name), data[0].expression));
+            }
+            else {
+                objects.push(typescript_1.factory.createPropertyAssignment(typescript_1.factory.createStringLiteral(name), typescript_1.factory.createObjectLiteralExpression(data.sort((a, b) => a.index - b.index).map(({ name, expression }) => {
+                    if (!name) {
+                        return typescript_1.factory.createSpreadAssignment(expression);
+                    }
+                    else {
+                        return typescript_1.factory.createPropertyAssignment(typescript_1.factory.createStringLiteral(name), expression);
+                    }
+                }), true)));
+            }
         });
         if (this.directives.length > 0) {
             objects.push(typescript_1.factory.createPropertyAssignment('directives', typescript_1.factory.createArrayLiteralExpression(this.directives
@@ -150,11 +155,11 @@ class AttributesData {
                         typescript_1.factory.createPropertyAssignment('value', expression),
                     ]);
                 }
-            }))));
+            }), true)));
         }
         this.destroy();
         if (objects.length > 0) {
-            return typescript_1.factory.createObjectLiteralExpression(objects);
+            return typescript_1.factory.createObjectLiteralExpression(objects, true);
         }
     }
     destroy() {

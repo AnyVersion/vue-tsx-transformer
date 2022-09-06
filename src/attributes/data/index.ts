@@ -147,20 +147,29 @@ export default class AttributesData {
       )
     })
     this.props.forEach((data, name) => {
-      objects.push(
-        factory.createPropertyAssignment(
-          name,
-          factory.createObjectLiteralExpression(
-            data.sort((a, b) => a.index - b.index).map(({ name, expression }) => {
-              if (!name) {
-                return factory.createSpreadAssignment(expression)
-              } else {
-                return factory.createPropertyAssignment(factory.createStringLiteral(name), expression)
-              }
-            })
+      if (data.length === 1 && !data[0].name) {
+        objects.push(
+          factory.createPropertyAssignment(
+            factory.createStringLiteral(name),
+            data[0].expression
           )
         )
-      )
+      } else {
+        objects.push(
+          factory.createPropertyAssignment(
+            factory.createStringLiteral(name),
+            factory.createObjectLiteralExpression(
+              data.sort((a, b) => a.index - b.index).map(({ name, expression }) => {
+                if (!name) {
+                  return factory.createSpreadAssignment(expression)
+                } else {
+                  return factory.createPropertyAssignment(factory.createStringLiteral(name), expression)
+                }
+              }), true
+            )
+          )
+        )
+      }
     })
     if (this.directives.length > 0) {
       objects.push(
@@ -178,14 +187,14 @@ export default class AttributesData {
                     factory.createPropertyAssignment('value', expression),
                   ])
                 }
-              })
+              }), true
           )
         )
       )
     }
     this.destroy()
     if (objects.length > 0) {
-      return factory.createObjectLiteralExpression(objects)
+      return factory.createObjectLiteralExpression(objects, true)
     }
   }
   destroy() {
