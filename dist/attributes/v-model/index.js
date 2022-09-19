@@ -30,7 +30,7 @@ function transformVModel({ tag, expression, isComponent }) {
         /**
           vModel={expression}
           ->
-          value={expression}
+          domPropsValue={expression}
           <select> -> onChange={$$event => {
             expression = $$event.target.value
           }}
@@ -41,7 +41,7 @@ function transformVModel({ tag, expression, isComponent }) {
           todo: <input type="radio|chechbox"
         */
         return [
-            typescript_1.factory.createJsxAttribute(typescript_1.factory.createIdentifier('value'), typescript_1.factory.createJsxExpression(undefined, expression)),
+            typescript_1.factory.createJsxAttribute(typescript_1.factory.createIdentifier('domPropsValue'), typescript_1.factory.createJsxExpression(undefined, expression)),
             typescript_1.factory.createJsxAttribute(typescript_1.factory.createIdentifier(tag === 'select' ? 'onChange' : 'onInput'), typescript_1.factory.createJsxExpression(undefined, typescript_1.factory.createArrowFunction(undefined, undefined, [(0, util_1.createParameterDeclaration)('$$event')], undefined, typescript_1.factory.createToken(typescript_1.default.SyntaxKind.EqualsGreaterThanToken), typescript_1.factory.createBlock([typescript_1.factory.createExpressionStatement(typescript_1.factory.createBinaryExpression(expression, typescript_1.factory.createToken(typescript_1.default.SyntaxKind.EqualsToken), typescript_1.factory.createPropertyAccessExpression(typescript_1.factory.createPropertyAccessExpression(typescript_1.factory.createIdentifier("$$event"), typescript_1.factory.createIdentifier("target")), typescript_1.factory.createIdentifier("value"))))]))))
         ];
     }

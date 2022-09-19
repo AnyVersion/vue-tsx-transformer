@@ -10,7 +10,7 @@ export default function transformVModel({ tag, expression, isComponent }: {
     /**
       vModel={expression}
       -> 
-      value={expression}
+      domPropsValue={expression}
       <select> -> onChange={$$event => {
         expression = $$event.target.value
       }}
@@ -22,7 +22,7 @@ export default function transformVModel({ tag, expression, isComponent }: {
     */
     return [
       factory.createJsxAttribute(
-        factory.createIdentifier('value'),
+        factory.createIdentifier('domPropsValue'),
         factory.createJsxExpression(undefined, expression)
       ),
       factory.createJsxAttribute(
