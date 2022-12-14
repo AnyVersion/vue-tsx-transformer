@@ -9,9 +9,13 @@ test('jsxText', () => {
     }
     render() {
       return <div>
-        <TerminalComponent service={this.service} props={a} attrsTest={1} test={{
-          default: () => <div>&nbsp;abc©</div>
-        }} />
+        <select directives={[{name:'test', value: "333"}, b]} v-model={a}></select>
+        <input v-model={a}></input>
+        <Component v-model={a}></Component>
+
+        <div key="123" c="1233" b="b" props={a} propsProp={b} propsProps={c} onXx={() => {
+
+        }}></div>
       </div>
     }
   }
@@ -21,7 +25,7 @@ test('jsxText', () => {
       before: [VueTsxTransformer()]
     },
     compilerOptions: {
-      target: ts.ScriptTarget.ES2016
+      target: ts.ScriptTarget.ES2017
     },
     fileName: 'test.tsx'
   }).outputText
