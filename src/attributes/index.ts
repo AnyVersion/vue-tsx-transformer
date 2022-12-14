@@ -4,6 +4,9 @@ import transformVModel from "./v-model"
 import HtmlTags, { htmlTags } from 'html-tags'
 import SvgTags from 'svg-tags'
 
+const root = ['staticClass', 'class', 'style', 'key', 'ref', 'refInFor', 'slot', 'scopedSlots', 'model']
+const prefixes = ['props', 'domProps', 'on', 'nativeOn', 'hook', 'attrs']
+
 export default function transformAttributes(tag: string, attributes: ts.JsxAttributes): ts.ObjectLiteralExpression | undefined {
   const isComponent = !HtmlTags.includes(tag as htmlTags) && !SvgTags.includes(tag)
   const data = new AttributesData
@@ -29,8 +32,23 @@ export default function transformAttributes(tag: string, attributes: ts.JsxAttri
           name: name.replace(/^v-?/, '').replace(/^[A-Z]/, (s) => s.toLowerCase()),
           expression,
         })
+      } else if (name === 'directives') {
+        data.directive({
+          name: '',
+          expression
+        })
+      } else if (root.includes(name)) {
+        data.root(name, expression)
       } else {
-        data.attr({ name, expression })
+        const prefix = prefixes.find(prefix => name.startsWith(prefix))
+        if (prefix) {
+          data.prop(prefix, {
+            name: name.replace(prefix, '').replace(/^-/, "").replace(/^[A-Z]/, (s) => s.toLowerCase()),
+            expression,
+          })
+        } else {
+          data.prop('attrs', { name, expression })
+        }
       }
     } else if (ts.isJsxSpreadAttribute(node)) {
       data.spread(node)

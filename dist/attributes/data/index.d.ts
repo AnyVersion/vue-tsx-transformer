@@ -6,11 +6,11 @@ export default class AttributesData {
     private props;
     private index;
     next(): void;
-    attr({ name, expression }: {
+    prop(prop: string, { name, expression }: {
         name: string;
         expression: ts.Expression;
     }): void;
-    private addProp;
+    root(name: string, expression: ts.Expression): void;
     directive({ name, expression }: {
         name: string;
         expression: ts.Expression;

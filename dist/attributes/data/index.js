@@ -24,8 +24,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typescript_1 = __importStar(require("typescript"));
-const root = ['staticClass', 'class', 'style', 'key', 'ref', 'refInFor', 'slot', 'scopedSlots', 'model'];
-const prefixes = ['props', 'domProps', 'on', 'nativeOn', 'hook', 'attrs'];
 class AttributesData {
     constructor() {
         this.spreads = [];
@@ -37,39 +35,18 @@ class AttributesData {
     next() {
         this.index++;
     }
-    attr({ name, expression }) {
-        if (name === 'directives') {
-            this.directives.push({
-                name: '',
-                expression,
-                index: this.index,
-            });
-        }
-        else if (root.includes(name)) {
-            this.roots.set(name, {
-                expression,
-                index: this.index,
-            });
-        }
-        else {
-            const prefix = prefixes.find(prefix => name.startsWith(prefix));
-            if (prefix) {
-                this.addProp(prefix, {
-                    name: name.replace(prefix, '').replace(/^-/, "").replace(/^[A-Z]/, (s) => s.toLowerCase()),
-                    expression,
-                });
-            }
-            else {
-                this.addProp('attrs', { name, expression });
-            }
-        }
-    }
-    addProp(prop, { name, expression }) {
+    prop(prop, { name, expression }) {
         if (!this.props.has(prop)) {
             this.props.set(prop, []);
         }
         this.props.get(prop).push({
             name,
+            expression,
+            index: this.index,
+        });
+    }
+    root(name, expression) {
+        this.roots.set(name, {
             expression,
             index: this.index,
         });
@@ -145,22 +122,29 @@ class AttributesData {
         if (this.directives.length > 0) {
             objects.push(typescript_1.factory.createPropertyAssignment('directives', typescript_1.factory.createArrayLiteralExpression(this.directives
                 .sort((a, b) => a.index - b.index)
-                .map(({ name, expression }) => {
+                .reduce((total, { name, expression }) => {
                 if (!name) {
-                    return typescript_1.factory.createSpreadElement(expression);
+                    if (typescript_1.default.isArrayLiteralExpression(expression)) {
+                        expression.elements.forEach(item => {
+                            total.push(item);
+                        });
+                    }
+                    else {
+                        total.push(typescript_1.factory.createSpreadElement(expression));
+                    }
                 }
                 else {
-                    return typescript_1.factory.createObjectLiteralExpression([
+                    total.push(typescript_1.factory.createObjectLiteralExpression([
                         typescript_1.factory.createPropertyAssignment('name', typescript_1.factory.createStringLiteral(name)),
                         typescript_1.factory.createPropertyAssignment('value', expression),
-                    ]);
+                    ]));
                 }
-            }), true)));
+                return total;
+            }, []), true)));
         }
+        const result = objects.length > 0 ? typescript_1.factory.createObjectLiteralExpression(objects, true) : undefined;
         this.destroy();
-        if (objects.length > 0) {
-            return typescript_1.factory.createObjectLiteralExpression(objects, true);
-        }
+        return result;
     }
     destroy() {
         this.spreads = [];
