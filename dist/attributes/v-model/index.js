@@ -1,61 +1,20 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const typescript_1 = __importStar(require("typescript"));
-const util_1 = require("../../util");
+const component_1 = __importDefault(require("./component"));
+const input_1 = __importDefault(require("./input"));
+const select_1 = __importDefault(require("./select"));
 function transformVModel({ tag, expression, isComponent }) {
     if (!isComponent) {
-        /**
-          vModel={expression}
-          ->
-          domPropsValue={expression}
-          <select> -> onChange={$$event => {
-            expression = $$event.target.value
-          }}
-          <other> -> onInput={($$event) => {
-            xpression = $$event.target.value
-          }}
-    
-          todo: <input type="radio|chechbox"
-        */
-        return [
-            typescript_1.factory.createJsxAttribute(typescript_1.factory.createIdentifier('domPropsValue'), typescript_1.factory.createJsxExpression(undefined, expression)),
-            typescript_1.factory.createJsxAttribute(typescript_1.factory.createIdentifier(tag === 'select' ? 'onChange' : 'onInput'), typescript_1.factory.createJsxExpression(undefined, typescript_1.factory.createArrowFunction(undefined, undefined, [(0, util_1.createParameterDeclaration)('$$event')], undefined, typescript_1.factory.createToken(typescript_1.default.SyntaxKind.EqualsGreaterThanToken), typescript_1.factory.createBlock([typescript_1.factory.createExpressionStatement(typescript_1.factory.createBinaryExpression(expression, typescript_1.factory.createToken(typescript_1.default.SyntaxKind.EqualsToken), typescript_1.factory.createPropertyAccessExpression(typescript_1.factory.createPropertyAccessExpression(typescript_1.factory.createIdentifier("$$event"), typescript_1.factory.createIdentifier("target")), typescript_1.factory.createIdentifier("value"))))]))))
-        ];
+        if (tag === 'select') {
+            return (0, select_1.default)(expression);
+        }
+        else {
+            return (0, input_1.default)(expression);
+        }
     }
-    /*
-      vModel={expression}
-      ->
-      model={{
-        value: expression,
-        callback: ($$v) => expression = $$v
-      }}
-    */
-    return [typescript_1.factory.createJsxAttribute(typescript_1.factory.createIdentifier('model'), typescript_1.factory.createJsxExpression(undefined, typescript_1.factory.createObjectLiteralExpression([
-            typescript_1.factory.createPropertyAssignment("value", expression),
-            typescript_1.factory.createPropertyAssignment("callback", typescript_1.factory.createArrowFunction(undefined, undefined, [(0, util_1.createParameterDeclaration)('$$v')], undefined, typescript_1.factory.createToken(typescript_1.default.SyntaxKind.EqualsGreaterThanToken), typescript_1.factory.createBlock([typescript_1.factory.createExpressionStatement(typescript_1.factory.createBinaryExpression(expression, typescript_1.factory.createToken(typescript_1.default.SyntaxKind.EqualsToken), typescript_1.factory.createIdentifier("$$v")))], true))),
-        ], undefined)))];
+    return (0, component_1.default)(expression);
 }
 exports.default = transformVModel;
