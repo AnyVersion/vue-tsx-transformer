@@ -7,7 +7,7 @@ export default function createSelectVModel(expression: ts.Expression) {
    * <select vModel={expression}>
    * directives={[{ name: 'model', value: expression, rawName: 'v-model' }]}
    * onChange={$$event => {
-   *  const $$selectedVal = $$event.target.options.filter(o => o.selected).map(o => "_value" in o ? o._value : o.value)
+   *  const $$selectedVal = Array.prototype.filter.call($$event.target.options, o => o.selected).map(o => "_value" in o ? o._value : o.value)
    *  expression = $$event.target.multiple ? $$selectedVal : $$selectedVal[0]
    * }}
    */
@@ -36,25 +36,34 @@ export default function createSelectVModel(expression: ts.Expression) {
                         factory.createPropertyAccessExpression(
                           factory.createPropertyAccessExpression(
                             factory.createPropertyAccessExpression(
+                              factory.createIdentifier("Array"),
+                              factory.createIdentifier("prototype")
+                            ),
+                            factory.createIdentifier("filter")
+                          ),
+                          factory.createIdentifier("call")
+                        ),
+                        undefined,
+                        [
+                          factory.createPropertyAccessExpression(
+                            factory.createPropertyAccessExpression(
                               factory.createIdentifier("$$event"),
                               factory.createIdentifier("target")
                             ),
                             factory.createIdentifier("options")
                           ),
-                          factory.createIdentifier("filter")
-                        ),
-                        undefined,
-                        [factory.createArrowFunction(
-                          undefined,
-                          undefined,
-                          [createParameterDeclaration("o")],
-                          undefined,
-                          factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
-                          factory.createPropertyAccessExpression(
-                            factory.createIdentifier("o"),
-                            factory.createIdentifier("selected")
+                          factory.createArrowFunction(
+                            undefined,
+                            undefined,
+                            [createParameterDeclaration("o")],
+                            undefined,
+                            factory.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
+                            factory.createPropertyAccessExpression(
+                              factory.createIdentifier("o"),
+                              factory.createIdentifier("selected")
+                            )
                           )
-                        )]
+                        ]
                       ),
                       factory.createIdentifier("map")
                     ),
