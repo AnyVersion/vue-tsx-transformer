@@ -98,7 +98,7 @@ export default function createSelectVModel(expression: ts.Expression) {
               )
             ),
             factory.createExpressionStatement(factory.createBinaryExpression(
-              factory.createIdentifier("expression"),
+              expression,
               factory.createToken(ts.SyntaxKind.EqualsToken),
               factory.createConditionalExpression(
                 factory.createPropertyAccessExpression(
