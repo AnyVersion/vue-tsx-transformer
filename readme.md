@@ -3,7 +3,7 @@
 ## Installation
 
 ```
-$ npm install git+https://github.com/gityoog/vue-tsx-transformer --save
+$ npm install git+https://github.com/gityoog/vue-tsx-transformer --save-dev
 ```
 
 ## Usage
