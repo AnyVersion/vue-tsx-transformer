@@ -20,7 +20,8 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: |
-          sed -i 's/"name": "/"name": "@gityoog\//' package.json
           npm publish
+          sed -i 's/"name": "/"name": "@gityoog\//' package.json
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
