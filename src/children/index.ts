@@ -1,7 +1,10 @@
 import ts, { factory } from "typescript"
 import entities from "./html-entities"
-export default function transformChild(children?: ts.Node[]) {
-  const result = children?.map(item => {
+
+function transformChild(children: ts.Node[]): ts.ArrayLiteralExpression | undefined
+function transformChild(children: ts.Node[], keepEmpty: true): ts.ArrayLiteralExpression
+function transformChild(children: ts.Node[], keepEmpty: boolean = false) {
+  const result = children.map(item => {
     if (ts.isJsxText(item)) {
       const text = item.text.trim()
       if (text) {
@@ -16,8 +19,10 @@ export default function transformChild(children?: ts.Node[]) {
     } else {
       return item
     }
-  }).filter(item => item) as ts.Expression[] | undefined
-  if (result && result.length > 0) {
+  }).filter(item => item) as ts.Expression[]
+  if (keepEmpty || (result && result.length > 0)) {
     return factory.createArrayLiteralExpression(result, true)
   }
 }
+
+export default transformChild
