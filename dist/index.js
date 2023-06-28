@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typescript_1 = __importDefault(require("typescript"));
+const children_1 = __importDefault(require("./children"));
 const element_1 = __importDefault(require("./element"));
 const inject_h_1 = __importDefault(require("./inject-h"));
 const VueTsxTransformer = (options = {}) => context => sourceFile => {
@@ -23,6 +24,9 @@ function traverse(node, context, state) {
         if (state.hasJsx && state.options.injectH !== false) {
             return (0, inject_h_1.default)(method);
         }
+    }
+    if (typescript_1.default.isJsxFragment(node)) {
+        return (0, children_1.default)(node.children.map(item => traverse(item, context, state)), true);
     }
     if (typescript_1.default.isJsxElement(node) || typescript_1.default.isJsxSelfClosingElement(node)) {
         state.hasJsx = true;

@@ -28,8 +28,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const typescript_1 = __importStar(require("typescript"));
 const html_entities_1 = __importDefault(require("./html-entities"));
-function transformChild(children) {
-    const result = children === null || children === void 0 ? void 0 : children.map(item => {
+function transformChild(children, keepEmpty = false) {
+    const result = children.map(item => {
         if (typescript_1.default.isJsxText(item)) {
             const text = item.text.trim();
             if (text) {
@@ -45,7 +45,7 @@ function transformChild(children) {
             return item;
         }
     }).filter(item => item);
-    if (result && result.length > 0) {
+    if (keepEmpty || (result && result.length > 0)) {
         return typescript_1.factory.createArrayLiteralExpression(result, true);
     }
 }
