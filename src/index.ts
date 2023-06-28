@@ -1,4 +1,5 @@
 import ts from 'typescript'
+import transformChild from './children'
 import transformElement from './element'
 import injectH from './inject-h'
 
@@ -27,6 +28,9 @@ function traverse(node: ts.Node, context: ts.TransformationContext, state: {
     if (state.hasJsx && state.options.injectH !== false) {
       return injectH(method)
     }
+  }
+  if (ts.isJsxFragment(node)) {
+    return transformChild(node.children.map(item => traverse(item, context, state)), true)
   }
   if (ts.isJsxElement(node) || ts.isJsxSelfClosingElement(node)) {
     state.hasJsx = true
