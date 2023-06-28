@@ -45,7 +45,7 @@ export default {
 ```
 
 ## Changelog
-
+- 2023-06-28 add JsxFragment transform
 - 2022-12-14 fix select v-model, optimize directives merge
 - 2022-09-19 fix native component v-model
 
