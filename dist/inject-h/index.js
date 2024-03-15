@@ -31,9 +31,9 @@ function injectH(node) {
         return node;
     }
     if (node.name.getText() === 'render' && node.parameters.length === 0) {
-        return typescript_1.factory.createMethodDeclaration(node.decorators, node.modifiers, node.asteriskToken, node.name, node.questionToken, node.typeParameters, [(0, util_1.createParameterDeclaration)('h')], node.type, node.body);
+        return (0, util_1.tryUpdateMethodDeclaration)(node, [(0, util_1.createParameterDeclaration)('h')]);
     }
-    return typescript_1.factory.createMethodDeclaration(node.decorators, node.modifiers, node.asteriskToken, node.name, node.questionToken, node.typeParameters, node.parameters, node.type, typescript_1.factory.createBlock([
+    return (0, util_1.tryUpdateMethodDeclaration)(node, undefined, typescript_1.factory.createBlock([
         typescript_1.factory.createVariableStatement(undefined, typescript_1.factory.createVariableDeclarationList([typescript_1.factory.createVariableDeclaration(typescript_1.factory.createIdentifier("h"), undefined, undefined, typescript_1.factory.createPropertyAccessExpression(typescript_1.factory.createThis(), typescript_1.factory.createIdentifier("$createElement")))], typescript_1.default.NodeFlags.None))
     ].concat(((_a = node.body) === null || _a === void 0 ? void 0 : _a.statements) || [])));
 }

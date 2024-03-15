@@ -6,12 +6,6 @@
 $ npm install vue-tsx-transformer --save-dev
 ```
 
-or
-
-```
-$ npm install git+https://github.com/gityoog/vue-tsx-transformer --save-dev
-```
-
 ## Usage
 
 ```ts
@@ -45,6 +39,7 @@ export default {
 ```
 
 ## Changelog
+- 2024-03-15 merge spread operator into attrs
 - 2023-06-28 add JsxFragment transform
 - 2022-12-14 fix select v-model, optimize directives merge
 - 2022-09-19 fix native component v-model
@@ -108,19 +103,24 @@ render() {
   />
 }
 ```
+~~with the spread operator (object needs to be compatible with [Vue Data Object](https://v2.vuejs.org/v2/guide/render-function.html#The-Data-Object-In-Depth)):~~
 
-with the spread operator (object needs to be compatible with [Vue Data Object](https://v2.vuejs.org/v2/guide/render-function.html#The-Data-Object-In-Depth)):
+The spread operator will be merged into the `attrs` object for ts typing checking after `v1.2.4`.
 
 ```tsx
+// not supported > v1.2.4
 render() {
   const inputAttrs = {
     type: 'email',
     placeholder: 'Enter your email'
   }
-
   return <input {...{ attrs: inputAttrs }} />
 }
 ```
+
+
+
+```tsx
 
 ### Slots
 

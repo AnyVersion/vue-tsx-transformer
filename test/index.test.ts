@@ -4,7 +4,7 @@ import VueTsxTransformer from '../src'
 test('jsxText', () => {
 
   const input = `
-  const a = <DetailContext.Provider value={{ picker }}></DetailContext.Provider>
+  const a = <DetailContext.Provider a={true} {...a} value={{ picker }}></DetailContext.Provider>
   class  {
     test(){
       return <>

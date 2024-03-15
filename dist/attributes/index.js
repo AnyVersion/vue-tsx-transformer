@@ -32,7 +32,7 @@ const v_model_1 = __importDefault(require("./v-model"));
 const html_tags_1 = __importDefault(require("html-tags"));
 const svg_tags_1 = __importDefault(require("svg-tags"));
 const root = ['staticClass', 'class', 'style', 'key', 'ref', 'refInFor', 'slot', 'scopedSlots', 'model'];
-const prefixes = ['props', 'domProps', 'on', 'nativeOn', 'hook', 'attrs'];
+const prefixes = ['domProps', 'on', 'nativeOn', 'hook'];
 function transformAttributes(tag, attributes) {
     const isComponent = !html_tags_1.default.includes(tag) && !svg_tags_1.default.includes(tag);
     const data = new data_1.default;
@@ -83,7 +83,8 @@ function transformAttributes(tag, attributes) {
             }
         }
         else if (typescript_1.default.isJsxSpreadAttribute(node)) {
-            data.spread(node);
+            //data.spread(node)
+            data.prop('attrs', { name: '', expression: node.expression });
         }
     }
     return data.generate();
