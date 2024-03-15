@@ -5,7 +5,7 @@ import HtmlTags, { htmlTags } from 'html-tags'
 import SvgTags from 'svg-tags'
 
 const root = ['staticClass', 'class', 'style', 'key', 'ref', 'refInFor', 'slot', 'scopedSlots', 'model']
-const prefixes = ['props', 'domProps', 'on', 'nativeOn', 'hook', 'attrs']
+const prefixes = ['domProps', 'on', 'nativeOn', 'hook']
 
 export default function transformAttributes(tag: string, attributes: ts.JsxAttributes): ts.ObjectLiteralExpression | undefined {
   const isComponent = !HtmlTags.includes(tag as htmlTags) && !SvgTags.includes(tag)
@@ -51,7 +51,8 @@ export default function transformAttributes(tag: string, attributes: ts.JsxAttri
         }
       }
     } else if (ts.isJsxSpreadAttribute(node)) {
-      data.spread(node)
+      //data.spread(node)
+      data.prop('attrs', { name: '', expression: node.expression })
     }
   }
   return data.generate()
