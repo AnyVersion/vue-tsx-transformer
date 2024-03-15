@@ -11,6 +11,7 @@ export default function transformAttributes(tag: string, attributes: ts.JsxAttri
   const isComponent = !HtmlTags.includes(tag as htmlTags) && !SvgTags.includes(tag)
   const data = new AttributesData
   const attrs = attributes.properties.map(attr => attr)
+  const propKey = isComponent ? 'props' : 'attrs'
   while (attrs.length > 0) {
     const node = attrs.shift()!
     data.next()
@@ -47,12 +48,12 @@ export default function transformAttributes(tag: string, attributes: ts.JsxAttri
             expression,
           })
         } else {
-          data.prop('attrs', { name, expression })
+          data.prop(propKey, { name, expression })
         }
       }
     } else if (ts.isJsxSpreadAttribute(node)) {
       //data.spread(node)
-      data.prop('attrs', { name: '', expression: node.expression })
+      data.prop(propKey, { name: '', expression: node.expression })
     }
   }
   return data.generate()
