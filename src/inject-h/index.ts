@@ -1,32 +1,17 @@
 import ts, { factory } from 'typescript'
-import { createParameterDeclaration } from '../util'
+import { createParameterDeclaration, tryUpdateMethodDeclaration } from '../util'
 
 export default function injectH(node: ts.MethodDeclaration) {
   if (node.parameters.some(param => param.name.getText() === 'h')) {
     return node
   }
   if (node.name.getText() === 'render' && node.parameters.length === 0) {
-    return factory.createMethodDeclaration(
-      node.decorators,
-      node.modifiers,
-      node.asteriskToken,
-      node.name,
-      node.questionToken,
-      node.typeParameters,
-      [createParameterDeclaration('h')],
-      node.type,
-      node.body
+    return tryUpdateMethodDeclaration(
+      node,
+      [createParameterDeclaration('h')]
     )
   }
-  return factory.createMethodDeclaration(
-    node.decorators,
-    node.modifiers,
-    node.asteriskToken,
-    node.name,
-    node.questionToken,
-    node.typeParameters,
-    node.parameters,
-    node.type,
+  return tryUpdateMethodDeclaration(node, undefined,
     factory.createBlock(
       ([
         factory.createVariableStatement(
