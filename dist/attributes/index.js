@@ -37,6 +37,7 @@ function transformAttributes(tag, attributes) {
     const isComponent = !html_tags_1.default.includes(tag) && !svg_tags_1.default.includes(tag);
     const data = new data_1.default;
     const attrs = attributes.properties.map(attr => attr);
+    const propKey = isComponent ? 'props' : 'attrs';
     while (attrs.length > 0) {
         const node = attrs.shift();
         data.next();
@@ -78,13 +79,13 @@ function transformAttributes(tag, attributes) {
                     });
                 }
                 else {
-                    data.prop('attrs', { name, expression });
+                    data.prop(propKey, { name, expression });
                 }
             }
         }
         else if (typescript_1.default.isJsxSpreadAttribute(node)) {
             //data.spread(node)
-            data.prop('attrs', { name: '', expression: node.expression });
+            data.prop(propKey, { name: '', expression: node.expression });
         }
     }
     return data.generate();
