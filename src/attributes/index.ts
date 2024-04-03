@@ -11,7 +11,7 @@ export default function transformAttributes(tag: string, attributes: ts.JsxAttri
   const isComponent = !HtmlTags.includes(tag as htmlTags) && !SvgTags.includes(tag)
   const data = new AttributesData
   const attrs = attributes.properties.map(attr => attr)
-  const propKey = isComponent ? 'props' : 'attrs'
+  const propKey = 'attrs'
   while (attrs.length > 0) {
     const node = attrs.shift()!
     data.next()
