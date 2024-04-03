@@ -37,7 +37,7 @@ function transformAttributes(tag, attributes) {
     const isComponent = !html_tags_1.default.includes(tag) && !svg_tags_1.default.includes(tag);
     const data = new data_1.default;
     const attrs = attributes.properties.map(attr => attr);
-    const propKey = isComponent ? 'props' : 'attrs';
+    const propKey = 'attrs';
     while (attrs.length > 0) {
         const node = attrs.shift();
         data.next();

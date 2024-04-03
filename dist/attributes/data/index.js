@@ -106,7 +106,13 @@ class AttributesData {
         });
         this.props.forEach((data, name) => {
             if (data.length === 1 && !data[0].name) {
-                objects.push(typescript_1.factory.createPropertyAssignment(typescript_1.factory.createStringLiteral(name), data[0].expression));
+                if (name === 'attrs') {
+                    // attrs will be modified
+                    objects.push(typescript_1.factory.createPropertyAssignment(typescript_1.factory.createStringLiteral(name), typescript_1.factory.createObjectLiteralExpression([typescript_1.factory.createSpreadAssignment(data[0].expression)])));
+                }
+                else {
+                    objects.push(typescript_1.factory.createPropertyAssignment(typescript_1.factory.createStringLiteral(name), data[0].expression));
+                }
             }
             else {
                 objects.push(typescript_1.factory.createPropertyAssignment(typescript_1.factory.createStringLiteral(name), typescript_1.factory.createObjectLiteralExpression(data.sort((a, b) => a.index - b.index).map(({ name, expression }) => {
