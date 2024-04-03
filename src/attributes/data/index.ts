@@ -132,12 +132,24 @@ export default class AttributesData {
 
     this.props.forEach((data, name) => {
       if (data.length === 1 && !data[0].name) {
-        objects.push(
-          factory.createPropertyAssignment(
-            factory.createStringLiteral(name),
-            data[0].expression
+        if (name === 'attrs') {
+          // attrs will be modified
+          objects.push(
+            factory.createPropertyAssignment(
+              factory.createStringLiteral(name),
+              factory.createObjectLiteralExpression(
+                [factory.createSpreadAssignment(data[0].expression)]
+              )
+            )
           )
-        )
+        } else {
+          objects.push(
+            factory.createPropertyAssignment(
+              factory.createStringLiteral(name),
+              data[0].expression
+            )
+          )
+        }
       } else {
         objects.push(
           factory.createPropertyAssignment(
